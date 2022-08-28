@@ -1,0 +1,207 @@
+---
+title: "Tarea01"
+author: "Elena Almanza García"
+date: "27/8/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Tarea 01
+##Estadística descriptiva
+
+```{r}
+#Cargamos las librerias
+library(tidyverse)
+library(fdth)
+library(UsingR)
+library(formatR)
+```
+
+
+###Ejercico 1.
+En un estudio sobre la práctica de la higiene bucal en el hogar y las razones 
+para buscar atención dental entre los individuos en diálisis renal, Atassi 
+estudió a 90 sujetos en diálisis renal. El estado de higiene bucal de todos los 
+sujetos se examinó mediante un índice de placa con un rango de 0 a 3 (0 = sin 
+depósitos de placa blanda, 3 = abundancia de depósitos de placa blanda). Los 
+datos de EXR_C02_S03_01.csv muestran las puntuaciones del índice de placa de 
+los 90 sujetos.
+
+```{r}
+#leemos la base de datos
+bd_hb <- read_csv("https://raw.githubusercontent.com/fabarrios/ProbEstad/main/DataSets/ch02_all/EXR_C02_S03_01.csv",  show_col_types = FALSE)
+```
+
+Uitiliza los datos para preparar:
+a) Tabla de distribución de frecuencias 
+```{r}
+# a.1. Distribución de frecuencias
+freq_hb <- table(bd_hb$pindex)
+
+# a.2. Distribución de frecuencias relativas (datos de manera porcentual)
+freqRel_hb <- prop.table(freq_hb) #freq/length(bd.hb$pindex)
+
+# a.3. Distribución de frecuencias acumuladas
+freqAcum_hb <- cumsum(freq_hb)
+
+# a.4. Histograma
+hist_hb <- hist(bd_hb$pindex)
+
+# a.5. Poligono de frecuencias
+pol_hb <- frequency.polygon(bd_hb$pindex)
+pol_hb2 <- simple.freqpoly(bd_hb$pindex)
+```
+
+b)¿Qué porcentaje de las medidas es inferior a 2.00?
+```{r}
+pless_than_2 <- mean(bd_hb$pindex < 2)
+# (sum(bd_hb$pindex < 2))/(length(bd_hb$pindex)). Lo que hace el comando es ir
+# iterando la tabla, preguntando que elemento de ella es menor a 2 y los va 
+# aculando (sumando), el resultado lo divide entre el total de elementos que 
+# hay. Por eso es como sacar la media. 
+cat(pless_than_2*100,"%", "es el porcentaje de las medidas que es inferiror 
+    a 2.00")
+```
+
+c)¿Qué proporción de los sujetos tienen medidas mayores o iguales a 1.5?
+```{r}
+pgreaterorequal_than_1.5 <- mean(bd_hb$pindex >= 1.5)
+cat(pgreaterorequal_than_1.5*100,"%", "es la porción de los sujetos que tienen
+    medidas mayores o iguales a 1.5")
+```
+
+d)¿Qué porcentaje de las medidas están entre 1.50 y 1.99, incluyendolos?
+```{r}
+pbetween_1.5_1.99 <- mean(bd_hb$pindex >= 1.5 & bd_hb$pindex <= 1.99)
+cat(pbetween_1.5_1.99*100,"%", "es el porcentaje de las medidas que están entre
+    1.5 y 1.99")
+```
+
+e)¿Cuántas de las medidas son mayores que 2.49?
+```{r}
+greater_than_2.49 <- sum(bd_hb$pindex > 2.49)
+cat(greater_than_2.49,"es la cantidad de medidas mayores a 2.49")
+```
+
+
+###Ejercicio 2
+Janardhan et al. realizaron un estudio en el que midieron aneurismas 
+intracraneales (AII) idénticos en 125 pacientes. Los investigadores examinaron 
+las complicaciones posteriores al procedimiento y concluyeron que los AII pueden 
+tratarse con seguridad sin causar mortalidad, con una tasa de complicaciones 
+inferior a la comunicada anteriormente. Los datos en EXR_C02_S03_02.csv, son los 
+tamaños (en milímetros) de los 159 AII de la muestra.
+
+```{r}
+#leemos la base de datos
+bd_AII <- read_csv("https://raw.githubusercontent.com/fabarrios/ProbEstad/main/DataSets/ch02_all/EXR_C02_S03_02.csv",  show_col_types = FALSE)
+```
+
+Uitiliza los datos para preparar:
+a) Tabla de distribución de frecuencias 
+```{r}
+# a.1. Distribución de frecuencias
+freq_AII <- table(bd_AII$sizes)
+
+# a.2. Distribución de frecuencias relativas 
+freqRel_AII <- prop.table(freq_AII) 
+
+# a.3. Distribución de frecuencias acumuladas
+freqAcum_AII <- cumsum(freq_AII)
+
+# a.4. Histograma
+hist_AII <- hist(bd_AII$sizes)
+
+# a.5. Poligono de frecuencias
+pol_AII <- frequency.polygon(bd_AII$sizes)
+pol_AII <- simple.freqpoly(bd_AII$sizes)
+```
+
+b)¿Qué porcentaje de las medidas están entre 10 y 14.9, incluyendolos?
+```{r}
+pbetween_10_14.9 <- mean(bd_AII$sizes >= 10 & bd_AII$sizes <= 14.9)
+cat(pbetween_10_14.9*100,"%", "es el porcentaje de las medidas que están entre
+    10 y 14.9")
+```
+
+c)¿Cuántas observaciones son inferiores a 20?
+```{r}
+less_than_20 <- sum(bd_AII$sizes < 20)
+cat(less_than_20,"es la cantidad de medidas menores a 20")
+```
+
+d)¿Qué proporción de las medidas es mayor o igual a 25?
+```{r}
+pgreaterorequal_than_25 <- mean(bd_AII$sizes >= 25)
+cat(pgreaterorequal_than_25*100,"%", "es la propoción de las medidas mayores o 
+    iguales a 1.5")
+```
+
+e)¿Qué porcentaje de las mediciones es inferior a 10.0 o superior a 19.95?
+```{r}
+pless10_greater19.95 <- mean(bd_AII$sizes < 10 | bd_AII$sizes > 19.95 )
+cat(pless10_greater19.95*100,"%", "es el porcentaje de mediciones menores a 10 o
+    mayores a 19.95")
+```
+
+
+###Ejercicio 3
+Hoekema et al. estudiaron la morfología craneofacial de pacientes diagnosticados 
+de síndrome de apnea obstructiva del sueño (SAOS) en sujetos masculinos sanos. 
+Una de las variables demográficas que los investigadores recogieron para todos 
+los sujetos fue el Índice de Masa Corporal (IMC) (calculado dividiendo el peso 
+en kg por el cuadrado de la altura del paciente en cm) en EXR_C02_s03_03.csv, 
+se encuentran los valores del IMC de 29 sujetos con SAOS
+
+```{r}
+#leemos la base de datos
+bd_IMC <- read_csv("https://raw.githubusercontent.com/fabarrios/ProbEstad/main/DataSets/ch02_all/EXR_C02_S03_03.csv",  show_col_types = FALSE)
+```
+
+Uitiliza los datos para preparar:
+a) Tabla de distribución de frecuencias 
+```{r}
+# a.1. Distribución de frecuencias
+freq_IMC <- table(bd_IMC$bmi)
+
+# a.2. Distribución de frecuencias relativas 
+freqRel_IMC <- prop.table(freq_IMC) 
+
+# a.3. Distribución de frecuencias acumuladas
+freqAcum_IMC <- cumsum(freq_IMC)
+
+# a.4. Histograma
+hist_IMC <- hist(bd_IMC$bmi)
+
+# a.5. Poligono de frecuencias
+pol_IMC <- frequency.polygon(bd_IMC$bmi)
+pol_IMC <- simple.freqpoly(bd_IMC$bmi)
+```
+
+b)¿Qué porcentaje de las medidas es inferior a 30?
+```{r}
+pless_than_30 <- mean(bd_IMC < 30)
+cat(pless_than_30*100,"%", "es el porcentaje de las medidas menores a 30")
+```
+
+c)¿Qué porcentaje de las medidas está entre 40 y 49.99, incluyendolos?
+```{r}
+pbetween_40_49.99 <- mean(bd_IMC >= 40 & bd_IMC <= 49.99)
+cat(pbetween_40_49.99*100,"%", "es el porcentaje de las medidas que están entre
+    40 y 49.99")
+```
+
+d)¿Qué porcentaje de las medidas es mayor que 34.99?
+```{r}
+pgreater_than_34.99 <- mean(bd_IMC$bmi > 34.99)
+cat(pgreater_than_34.99, "es el porcentaje de las medidas mayores a 34.99")
+```
+
+e)¿Cuántas observaciones son inferiores a 40?
+```{r}
+less_than_40 <- sum(bd_IMC$bmi < 40)
+cat(less_than_40, "es la cantidad de observaciones menores a 40")
+```
