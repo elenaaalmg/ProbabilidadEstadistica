@@ -1,0 +1,126 @@
+---
+title: "Tarea02"
+author: "Elena Almanza García"
+date: "2/9/2022"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Tarea 02
+##Probabiliad 
+
+```{r}
+#Cargamos las librerias
+library(tidyverse)
+library(magrittr)
+```
+
+En un estudio sobre la victimización violenta de mujeres y hombres, Porcerelli 
+et al. recogieron información de 679 mujeres y 345 hombres de entre 18 y 64 años 
+en varios centros de medicina familiar del área metropolitana de Detroit. Los 
+pacientes rellenaron un cuestionario de historia clínica que incluía una 
+pregunta sobre la victimización. La tabla 1 muestra los sujetos de la muestra 
+clasificados de forma cruzada por sexo y el tipo de victimización violenta 
+declarada. Las categorías de victimización se definen como sin victimización, 
+victimización por parte de la pareja (y no por otros), victimización por parte 
+de personas que no son la pareja (amigos, familiares o extraños), y aquellos que 
+informaron de victimización múltiple.
+
+![](https://github.com/elenaaalmg/ProbabilidadEstadistica/blob/main/Tabla1_Tarea02.png?raw=true "Tabla 1")
+
+```{r}
+# Tabla 1
+genero = c("Mujeres", "Hombres", "Total")
+sin_victimizacion = c(611,308,919)
+victimizacion_pareja = c(34,10,44)
+victimizacion_no_pareja = c(16,17,33)
+victimizacion_multiple = c(18,10,28)
+total = c(679,345,1024)
+
+bd_vict = data.frame(genero, sin_victimizacion, victimizacion_pareja, 
+                     victimizacion_no_pareja, victimizacion_multiple, total)
+View(bd_vict)
+```
+
+a) Supongamos que elegimos un sujeto al azar de este grupo. ¿Cuál es la 
+   probabilidad de que este sujeto sea una mujer?
+```{r}
+PE_M_a <- bd_vict$total[1]/bd_vict$total[3]
+cat("La probabilidad de que el sujeto tomado al azar sea mujes es:",PE_M_a)
+```
+b) ¿Cómo llamamos a la probabilidad en la parte a?
+   Probabilidad incondicional 
+   
+c) Muestre cómo calcular la probabilidad pedida en la parte a mediante dos 
+   métodos adicionales.
+```{r}
+#Primer método
+PE_M_a1 <- bd_vict[1,6]/bd_vict[3,6]
+print(PE_M_a1)
+
+#Segundo método
+a2num <- bd_vict %>%
+   filter(row_number() == 1) %>%
+   pull(total)
+
+a2den <- bd_vict %>%
+   filter(row_number() == 3) %>%
+   pull(total)
+
+PE_M_a2 <- a2num %>% divide_by(a2den)
+print(PE_M_a2)
+
+```
+
+
+d) Si elegimos un sujeto al azar, ¿cuál es la probabilidad de que sea una mujer 
+   y haya sufrido malos tratos por parte de su pareja?
+```{r}
+PE_Mvp_d <- bd_vict$victimizacion_pareja[1]/bd_vict$total[3]
+cat("La probabilidad de que el sujeto tomado al azar sea mujer y, además, 
+    haya sufrido malos tratos por parte de su pareja, es:",PE_Mvp_d)
+```
+   
+e) ¿Cómo llamamos a la probabilidad calculada en la parte d?
+   Probabilidad conjunta 
+
+f) Supongamos que elegimos a un hombre al azar. Conociendo esta información, 
+   ¿cuál es la probabilidad de que haya sufrido maltrato por parte de personas 
+   que no son pareja?
+```{r}
+PE_Hvnp_f <- bd_vict$victimizacion_no_pareja[2]/bd_vict$total[2]
+cat("La probabilidad de que un hombre, tomado al azar, haya sufrido maltrato por 
+    parte de epersonas que no son su pareja, es:",PE_Hvnp_f)
+```
+   
+g) ¿Cómo llamamos a la probabilidad de la parte f?
+   Probabilidad condicional
+
+h) Supongamos que elegimos un sujeto al azar. ¿Cuál es la probabilidad de que se 
+   trate de un hombre o de alguien que haya sufrido malos tratos por parte de 
+   su pareja?
+```{r}
+PE_H_h <- bd_vict$total[2]/bd_vict$total[3]
+PE_vp_h <- bd_vict$victimizacion_pareja[3]/bd_vict$total[3]
+PE_Hvp_h <- bd_vict$victimizacion_pareja[2]/bd_vict$total[3]
+PE_h <- PE_H_h + PE_vp_h - PE_Hvp_h
+
+cat("Al tomar un sujeto al azar, La probabilidad de que sea un hombre o sea
+    alguien que ha sufrido maltrato por parte de su pareja, es:",PE_h)
+```
+   
+i) ¿Cómo llamamos al método con el que has obtenido la probabilidad de la 
+   parte h?
+   La regla de la adición 
+
+
+
+
+
+
+
